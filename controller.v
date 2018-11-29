@@ -190,7 +190,7 @@ module controller(
                     state = selectMode;
                 end
                 else if(b && !reset) begin
-                    state = countDownTimer;
+                    state = waitPauseTimerButRel;
                 end
             
             end
@@ -242,7 +242,7 @@ module controller(
                 count_en = 1;
                 if(mode[1]) begin
                     $display("TIMER");
-                    ctrSelect = 1;
+                    ctrSelect = 0;
                 end
                 else begin
                     $display("SW");

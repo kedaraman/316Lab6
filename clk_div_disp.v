@@ -23,22 +23,32 @@
 module clk_div_disp(
     input clk,
     input reset,
-    output clk_out
+    output reg clk_out
     );
     
     //reg [1:0] COUNT=2'b00;//Change to [24:0] TBD
     
     //assign clk_out = COUNT[1];//Change to [24] TBD
     
-    reg [22:0] COUNT = 23'd4569228;
-    assign clk_out = ~(|(COUNT));
+    reg [20:0] COUNT = 21'd0;
+    //assign clk_out = ~(|(COUNT));
     
     always @(posedge clk)
     begin
         if(reset)
             COUNT = 0;
         else
-            COUNT = (COUNT + 1) % 3046152;
+            if(COUNT == 1010765) begin
+                COUNT = 0;
+            end
+            else if(COUNT >= 505382) begin
+                clk_out = 1;
+                COUNT = COUNT + 1;
+            end
+            else begin
+                clk_out = 0;
+                COUNT = COUNT + 1;
+            end
     end
         
 endmodule
