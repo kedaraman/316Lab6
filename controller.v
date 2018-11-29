@@ -76,6 +76,7 @@ module controller(
     
     
     
+    
     always @(posedge clk) begin
         //State Transitions
         case (state)
@@ -107,6 +108,9 @@ module controller(
             loadValSWDef : begin
                 if(reset) begin
                     state = selectMode;
+                end
+                else if(synchronizeInit != Init) begin
+                    state = loadValSWDef;
                 end
                 else if(tcLimitReached) begin
                     state = doneSWDef;
