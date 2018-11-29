@@ -29,7 +29,8 @@ module controller(
     input [1:0] mode,
     output [3:0] an,
     output [6:0] sseg,
-    output [3:0] stateDebug
+    output [3:0] stateDebug,
+    output dps
     //output [16:0] synchronizeInit,
     );
     
@@ -74,6 +75,8 @@ module controller(
     
     assign stateDebug = state;
     
+    assign dps = 1;
+    
     
     
     always @(posedge clk) begin
@@ -107,6 +110,9 @@ module controller(
             loadValSWDef : begin
                 if(reset) begin
                     state = selectMode;
+                end
+                else if(synchronizeInit != Init) begin
+                    state = loadValSWDef;
                 end
                 else if(tcLimitReached) begin
                     state = doneSWDef;
@@ -228,7 +234,6 @@ module controller(
         case (state)
             waitInit : begin
                 init_ld_en = 1;
-                count_en = 1;
                 ctrSelect = 3;
                 anReset = 1;
                 //synchronizeInit = 17'b11111111111111111;
@@ -240,6 +245,7 @@ module controller(
                 //Assuming Mode 1
                 anReset = 0;
                 count_en = 1;
+                init_ld_en=1;
                 if(mode[1]) begin
                     $display("TIMER");
                     ctrSelect = 0;
@@ -251,7 +257,12 @@ module controller(
             end
             
             loadValSWDef : begin
-                ctrSelect = 3;
+                if(!mode[1] && mode[0]) begin
+                    ctrSelect = 0;
+                end
+                else begin
+                    ctrSelect = 3;
+                end
                 tcSelect = 0;
                 count_en = 1;
                 //Make Init the vals from LSB and MSB, initlden, etc

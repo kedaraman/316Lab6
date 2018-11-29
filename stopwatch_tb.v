@@ -44,9 +44,9 @@ module stopwatch_tb;
     clk = 0;
     b = 0;
     reset = 0;
-    mode = 2'b00;
+    mode = 2'b01;
     LSB = 4'b0001;
-    MSB = 4'b0000;
+    MSB = 4'b0001;
     $display("START");
     #50
     

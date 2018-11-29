@@ -56,7 +56,7 @@ module datapath(
     wire [16:0] muxReturn;
     wire [16:0] Time;
     mux counterMux (.i0(initValStoreOut), .i1(countUpWire), .i2(countDownWire), .i3(17'b00000000000000000), .select(ctrSelect), .d(muxReturn));
-    register_17bit counterReg (.clk(ms_clk), .enable(count_en), .Data(muxReturn), .Q(Time));
+    register_17bit counterReg (.clk(/*ms_clk/*NOT MS_CLK FOR SIMULATION*/clk), .enable(count_en), .Data(muxReturn), .Q(Time));
     
     RCA_17bit countUp (.clk(clk),.enable(1'b1), .A(Time), .B(17'b00000000000000001), .Cin(1'b0), .Q(countUpWire));
     RCA_17bit countDown (.clk(clk),.enable(1'b1), .A(Time), .B(-17'b00000000000000001), .Cin(1'b0), .Q(countDownWire));
