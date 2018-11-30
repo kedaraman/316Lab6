@@ -76,6 +76,7 @@ module controller(
     
     
     
+    
     always @(posedge clk) begin
         //State Transitions
         case (state)
